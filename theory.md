@@ -10,3 +10,15 @@ The "models" inside the file define different tables or collections of data that
 
 npx prisma init --datasource-provider sqlite -> initialize our schema prisma
 npx prisma migrate dev -> create our db
+
+---OAUTH AND NEXTAUTH---
+
+We are doing our authentication with Github. So that means we are going to have a classic sign in with Github kind of button in our application.
+
+To do so, we have to create a OAuth app on Github's website. So you need a github account.
+
+Navigate to: github.com/settings/applications/new
+
+I am going to call the Application name "DEV-Discuss" because DEV stands for development. If I need this app to be in production I will create a separate set of authentication keys through GitHub's website.
+
+AUTH_SECRET = can be anything.. (i just typed in those numbers and letters)
