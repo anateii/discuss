@@ -77,30 +77,57 @@ _CHECKING AUTH STATUS FROM SERVER AND CLIENT COMPONENTS_
 
 ## SERVER COMPONENTS
 
-import { Button } from "@nextui-org/react";
-import \* as actions from "../actions/index";
-import { auth } from "@/auth";
+```
+    import { Button } from "@nextui-org/react";
+    import \* as actions from "../actions/index";
+    import { auth } from "@/auth";
 
-export default async function Home() {
-const session = await auth();
+    export default async function Home() {
+    const session = await auth();
+    //In Server Components the session can be null or an object containing the    user's data
 
-return (
+    return (
 
-<div>
-<form action={actions.signIn}>
-<Button type="submit">Sign In</Button>
-</form>
+    <div>
+    <form action={actions.signIn}>
+    <Button type="submit">Sign In</Button>
+    </form>
 
-      <form action={actions.signOut}>
-        <Button type="submit">Sign Out</Button>
-      </form>
+          <form action={actions.signOut}>
+            <Button type="submit">Sign Out</Button>
+          </form>
 
-      {session?.user ? (
-        <div>{JSON.stringify(session?.user)}</div>
-      ) : (
-        <div>Signed out</div>
-      )}
-    </div>
+          {session?.user ? (
+            <div>{JSON.stringify(session?.user)}</div>
+          ) : (
+            <div>Signed out</div>
+          )}
+        </div>
+    )
+    ;
+    }
+```
 
-);
-}
+## CLIENT COMPONENTS
+
+We need a Session Provider which is usign React's context system to share information about whether or not the user is signed in throughout all the client components in our application. We need to set it up in our providers.tsx file.
+
+In Client Components the session is an object that is always defined.
+
+The actual session data is available on a .data property which might be null and then inside there, there might be a user property which is going to be defined if the user is Signed In.
+
+```
+    "use client";
+
+    import { useSession } from "next-auth/react";
+
+    export default function Profile() {
+    const session = useSession();
+
+    if (session.data?.user) {
+    return <div>From client: user is Signed In</div>;
+    }
+
+    return <div>From client: user is Signed Out</div>;
+    }
+```
