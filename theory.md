@@ -72,3 +72,35 @@ api.github.com/user Authorization: Bearer abc123
 10. After that we still need some way to kind of identify this user whenever they make a request to our server. To do so we send a COOKIE that is going to include some information securely encripted about the person who's making the request.
 
 11. NextAuth is going to read in that cookie data, figure out who's making a request to us and then modify the incoming request a little bit so the rest of our application can understand exactly who's making this request.
+
+_CHECKING AUTH STATUS FROM SERVER AND CLIENT COMPONENTS_
+
+## SERVER COMPONENTS
+
+import { Button } from "@nextui-org/react";
+import \* as actions from "../actions/index";
+import { auth } from "@/auth";
+
+export default async function Home() {
+const session = await auth();
+
+return (
+
+<div>
+<form action={actions.signIn}>
+<Button type="submit">Sign In</Button>
+</form>
+
+      <form action={actions.signOut}>
+        <Button type="submit">Sign Out</Button>
+      </form>
+
+      {session?.user ? (
+        <div>{JSON.stringify(session?.user)}</div>
+      ) : (
+        <div>Signed out</div>
+      )}
+    </div>
+
+);
+}

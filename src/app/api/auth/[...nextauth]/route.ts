@@ -1,4 +1,4 @@
-export { GET, POST } from "@auth";
+export { GET, POST } from "../../../../auth";
 
 //generally we dont create these route handlers but when whenever we need some outside
 // server to access our app programmatically then yes.
