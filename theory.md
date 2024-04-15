@@ -139,4 +139,10 @@ The actual session data is available on a .data property which might be null and
 3. Create your routing folders + page.tsx files based on number 1
 4. Identify the places where data changes in your app: create new topic, creat new post, create a comment. We could add them in the index.ts file in actions folder but each one of these are robust so we create separate files in the same actions folder.
 5. Make empty server actions for each of those
-6. Add in comments on what paths you'll need to revalidate for each server action
+6. Add in comments on what paths you'll need to revalidate for each server action:
+
+- createTopic: Whenever a user creates a topic we display a list of that on the Home page. So we need to revalidate the home. Do we need to do that with topic show? No, because we have not cached a topic that has not yet been created. When we call createTopic we are makin a topic for the very first time.
+
+-createPost: When a user creates a new post we want to revalidate the TopicShow page where all the different posts for that topic are listed out. Should we revalidate the Home page too since it lists our posts? Yes, and we can use the Time-Based cache technique, very useful when we deal with data on a social media site that is changing costantly behind the scenes but users don't have the expectation of seeing the most recent data that is available.
+
+-createComment: When we create a comment we have to keep in mind that we are displaying the number of comments on the posts of the home page,but again the user doesn't expect to see this updated. What is important though is the View Post page where you add a new comment. Whenever a user makes a post, they are going to expect to see it instantly on the screen because they want to see something they just made. So we want to revalidate Show Post Page.
