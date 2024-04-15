@@ -146,3 +146,14 @@ The actual session data is available on a .data property which might be null and
 -createPost: When a user creates a new post we want to revalidate the TopicShow page where all the different posts for that topic are listed out. Should we revalidate the Home page too since it lists our posts? Yes, and we can use the Time-Based cache technique, very useful when we deal with data on a social media site that is changing costantly behind the scenes but users don't have the expectation of seeing the most recent data that is available.
 
 -createComment: When we create a comment we have to keep in mind that we are displaying the number of comments on the posts of the home page,but again the user doesn't expect to see this updated. What is important though is the View Post page where you add a new comment. Whenever a user makes a post, they are going to expect to see it instantly on the screen because they want to see something they just made. So we want to revalidate Show Post Page.
+
+## STATIC CACHING WHILE USING AUTH
+
+- Every page displaying Header will be dynamic because the Header is accessing cookies with the auth function! Handling cookies === dynamic
+- How do we fix this since, remember, static === fast!?
+
+---> By moving the authentication stuff in a Client Component.
+We'll still going to have the Header but it's not going to deal with auth itself.
+HeaderAuth component: 'useSession' hook doesn't directly access cookies - it makes a request to the backend to figure out the auth status. That means we have the ability at least to be static.
+
+_BUT BE CAREFUL!_ There is a period of time when our page first loads up in the browser where we don't know if the user is authenticated, and because the way we have put together our header auth component, our components is going to default to showing the sign In and Sign up Buttons. We can fix that by checking the status of our session and if it's still loading deciding to do something with our buttons.
