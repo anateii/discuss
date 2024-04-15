@@ -137,6 +137,6 @@ The actual session data is available on a .data property which might be null and
 1. Identify all the different routes you want your app to have + the data that each shows
 2. Make 'path helper' functions that will have a clear name for each of our route in the application. It's easier to handle this in a single file
 3. Create your routing folders + page.tsx files based on number 1
-4. Identify the places where data changes in your app
+4. Identify the places where data changes in your app: create new topic, creat new post, create a comment. We could add them in the index.ts file in actions folder but each one of these are robust so we create separate files in the same actions folder.
 5. Make empty server actions for each of those
 6. Add in comments on what paths you'll need to revalidate for each server action
