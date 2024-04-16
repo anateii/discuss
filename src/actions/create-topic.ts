@@ -1,6 +1,11 @@
 "use server";
 import { z } from "zod";
 import { auth } from "@/auth";
+import { Topic } from "@prisma/client";
+import { redirect } from "next/navigation";
+import { db } from "@/db";
+import paths from "@/paths";
+import { revalidatePath } from "next/cache";
 
 const createTopicSchema = z.object({
   name: z
@@ -50,7 +55,33 @@ export async function createTopic(
     };
   }
 
-  return {
-    errors: {},
-  };
+  //This a common pattern in a Next project : let - try/catch - redirect
+  //we initialize a topic variable with the Topic interface so we can later pass it off to redirect
+  let topic: Topic;
+
+  try {
+    topic = await db.topic.create({
+      data: {
+        slug: result.data.name, //the name is a slug
+        description: result.data.description,
+      },
+    });
+  } catch (err: unknown) {
+    if (err instanceof Error) {
+      return {
+        errors: {
+          generalFormIssues: [err.message],
+        },
+      };
+    } else {
+      return {
+        errors: {
+          generalFormIssues: ["Something went wrong"],
+        },
+      };
+    }
+  }
+
+  revalidatePath("/");
+  redirect(paths.topicShowPath(topic.slug));
 }
