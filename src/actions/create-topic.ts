@@ -11,7 +11,20 @@ const createTopicSchema = z.object({
   description: z.string().min(10),
 });
 
-export async function createTopic(formData: FormData) {
+interface CreateTopicFormState {
+  errors: {
+    name?: string[]; //array of strings,
+    description?: string[];
+  };
+}
+
+//we need to make sure the function returns a value with that type of formState
+//to do that we can put in a declared type return annotation on the function
+//The Promise is because this is an async function
+export async function createTopic(
+  formState: CreateTopicFormState,
+  formData: FormData
+): Promise<CreateTopicFormState> {
   //TO DO: Revalidate the Home Page after creating a topic
 
   const result = createTopicSchema.safeParse({
@@ -20,6 +33,12 @@ export async function createTopic(formData: FormData) {
   });
 
   if (!result.success) {
-    console.log(result.error.flatten().fieldErrors);
+    return {
+      errors: result.error.flatten().fieldErrors,
+    };
   }
+
+  return {
+    errors: {},
+  };
 }
