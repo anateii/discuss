@@ -157,3 +157,12 @@ We'll still going to have the Header but it's not going to deal with auth itself
 HeaderAuth component: 'useSession' hook doesn't directly access cookies - it makes a request to the backend to figure out the auth status. That means we have the ability at least to be static.
 
 _BUT BE CAREFUL!_ There is a period of time when our page first loads up in the browser where we don't know if the user is authenticated, and because the way we have put together our header auth component, our components is going to default to showing the sign In and Sign up Buttons. We can fix that by checking the status of our session and if it's still loading deciding to do something with our buttons.
+
+## USEFORMSTATUS
+
+- Looks at the 'form' in the parent component
+- We cannot use it directly inside the component that is rendering our form
+- We have our TopicCreateForm that it's going to be the parent. So we need to create a child component the FormButton
+- Inside FormButton we are going to show a button where it's going to make use of the useFormStatus hook and it's going to take a look at our parent to decide what's the status of the form
+- The status of a form is going to tell us what the method of the form is (GET or POST type form).
+- It's going to tell us whether or not the form has been submitted, and is kind of pending approval or pending submission on our server action and the data inside of the form as well
