@@ -59,7 +59,33 @@ export async function createPost(
     };
   }
 
-  return {
-    errors: {},
-  };
+  let post: Post;
+
+  try {
+    post = await db.post.create({
+      data: {
+        title: result.data.title,
+        content: result.data.content,
+        userId: session.user.id,
+        topicId: topic.id,
+      },
+    });
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return {
+        errors: {
+          _form: [error.message],
+        },
+      };
+    } else {
+      return {
+        errors: {
+          _form: ["Failed to create post"],
+        },
+      };
+    }
+  }
+
+  revalidatePath(paths.topicShowPath(slug));
+  redirect(paths.postShowPath(slug, post.id));
 }
