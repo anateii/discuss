@@ -166,3 +166,16 @@ _BUT BE CAREFUL!_ There is a period of time when our page first loads up in the 
 - Inside FormButton we are going to show a button where it's going to make use of the useFormStatus hook and it's going to take a look at our parent to decide what's the status of the form
 - The status of a form is going to tell us what the method of the form is (GET or POST type form).
 - It's going to tell us whether or not the form has been submitted, and is kind of pending approval or pending submission on our server action and the data inside of the form as well
+
+## DATA FETCHING
+
+1. Parent or Child ?
+
+- Parent: Easier to make child components reusable, but slower page load speed
+- Child: Faster page load, but components less reusable
+
+2.  Hybrid solution:
+
+1)  Make a file called PostQuery file. Inside there we are going to define a lot of different functions that are going to access our database and run some specific query. We are going to manually put in a type annotation for the return value for each of these. The type of data will be defined at the very top and it's goint to be essentially exactly the kind of data that our post list components needs to render correctly.
+2)  In our PostList component we are going to add a props interface that it's going to expect to receive a function called fetch posts. Whenever that function is called, it's going to get back a promise that resolves with an array of those posts with data objects.
+3)  Inside our parents components such as TopicShowPage we are going to pass in the slug that is needed to run the query. They key here in step 3 is that parent components can decide what data to fetch, children fetch it.
